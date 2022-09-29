@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "My app",
-      home: const MyAppState(),
+      home: MyAppState(),
     );
   }
 }
@@ -42,7 +42,7 @@ class _MyAppStateState extends State<MyAppState> {
       title: "My app",
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
+          title: const Text('Home'),
         ),
         body: tabs[_selectTab],
         bottomNavigationBar: BottomNavigationBar(
@@ -60,6 +60,10 @@ class _MyAppStateState extends State<MyAppState> {
           ],
         ),
       ),
+      routes: {
+        "/home": (context) => const HomeScreen(),
+        "/setting": (context) => SettingScreen()
+      },
       debugShowCheckedModeBanner: false,
     );
   }
