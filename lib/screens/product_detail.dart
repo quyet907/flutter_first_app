@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/models/pruduct.dart';
+import 'package:flutter_application_2/models/product.dart';
 import 'package:money_formatter/money_formatter.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -17,7 +17,11 @@ class ProductDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image.network(product.)
+            Image.network(
+              product.images[0],
+              height: 300,
+              fit: BoxFit.fitWidth,
+            ),
             Text(
               product.name,
               overflow: TextOverflow.ellipsis,

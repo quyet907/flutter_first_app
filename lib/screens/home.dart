@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_2/models/pruduct.dart';
-import 'package:flutter_application_2/screens/prduct_detail.dart';
+import 'package:flutter_application_2/controllers/post_controller.dart';
+import 'package:flutter_application_2/controllers/product_controller.dart';
+import 'package:flutter_application_2/models/base/paging.dart';
+import 'package:flutter_application_2/models/product.dart';
+import 'package:flutter_application_2/screens/product_detail.dart';
 import 'package:money_formatter/money_formatter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,15 +14,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String src =
-      'https://www.dongphucthienphuoc.vn/wp-content/uploads/2021/02/hoodie-la-gi-2.jpg';
+  Paging<Product> _paging = Paging<Product>();
 
-  Product product = Product(
-    name: "Áo khoác dây kéo phù hợp nam nữ chất nỉ bông cao cấp",
-    description: "",
-    price: 4500,
-    images: [],
-  );
+  @override
+  void initState() {
+    var postController = ProductController();
+
+    Future<void> getList() async {
+      var pagingProduct = await postController.list();
+
+      setState(() {
+        _paging = pagingProduct;
+      });
+
+      print(pagingProduct.toJson((product) => product.toJson()));
+    }
+
+    getList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,65 +44,78 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
         children: List.generate(
-          20,
-          (index) => GestureDetector(
-            onTap: () => {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => ProductDetailScreen(product),
-              ))
-            },
-            child: Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: const BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8),
-                ),
+          _paging.rows.length,
+          (index) => ProductItem(product: _paging.rows[index]),
+        ),
+      ),
+    );
+  }
+}
+
+class ProductItem extends StatelessWidget {
+  ProductItem({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (ctx) => ProductDetailScreen(product),
+        ))
+      },
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 200,
+              child: Image.network(
+                product.images[0],
+                width: 200,
+                fit: BoxFit.fitWidth,
               ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 200,
-                    child: Image.network(
-                      src,
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
+                  Text(
+                    product.name,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      MoneyFormatter(
+                        amount: product.price,
+                        settings: MoneyFormatterSettings(
+                            symbolAndNumberSeparator: '', fractionDigits: 0),
+                      ).output.symbolOnLeft,
+                      style: TextStyle(
+                        color: Colors.red[700],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Áo khoác dây kéo phù hợp nam nữ chất nỉ bông cao cấp - #$index",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            MoneyFormatter(
-                              amount: 4500,
-                              settings: MoneyFormatterSettings(
-                                  symbolAndNumberSeparator: '',
-                                  fractionDigits: 0),
-                            ).output.symbolOnLeft,
-                            style: TextStyle(
-                              color: Colors.red[700],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
-            ),
-          ),
+            )
+          ],
         ),
       ),
     );
