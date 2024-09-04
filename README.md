@@ -15,5 +15,5 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-![Diagram](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuOhgJ4bCJbNGjLD8p2r9JCbfS2u90000)
+![Diagram](//www.plantuml.com/plantuml/png/TPBTIWCn48Nlvoc6lUyBY4ZN7qL42ceH52-cc-bQcYPBakg5-EvEzySc9lQgPywtSv93vZwG2_kT1cg2TLXT6OLBpwv2yYZYy7_opgdPBjRhJSD7v3ZhIUX4KyjONRoJCQmh_0AKt-iph-xPUsetfgqLTO7Ts-1SKyChQxV_s2-axQBEpMy0OzMG5F2HtOSSeZ_JOJ3g4QbRDW5znFIJ57geRv8rebFWpjXFpQhb1FkTJZ2CjU7fR7Q6XNkdGF7w6LLk0RBj4nztK4ueaUMKd8D836xIPonGtBXAI5zCllkFBtPMCPxWijEM55xQPh-JCCYGD5Q-U7AqCLZVmfoDaXV_0m00)
 
